@@ -25,9 +25,10 @@ io.on('connection', (socket) => {
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
   // listen for new messages FROM clients, emit them back TO clients
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => {
     console.log('Msg from client', message);
     io.emit('newMessage', generateMessage(message.from, message.text));
+    callback('Msg from server');
   });
 
   socket.on('disconnect', (socket) => {
