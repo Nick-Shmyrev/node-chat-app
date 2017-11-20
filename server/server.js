@@ -14,16 +14,10 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('new user connected');
 
-  socket.emit('newMessage', {
-    from: 'A.N. Owen',
-    text: "Testing, testing, 1-2-3",
-    createdAt: Date.now()
-  });
-
   // listen for new messages FROM clients, emit them back TO clients
   socket.on('createMessage', (message) => {
     console.log('Msg from client', message);
-    socket.emit('newMessage', {
+    io.emit('newMessage', {
       from: message.from,
       text: message.text,
       createdAt: Date.now()

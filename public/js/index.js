@@ -4,10 +4,10 @@ socket.on('connect', function () {
   console.log('connected to server');
 
   // sends a new message TO server
-  socket.emit('createMessage', {
-    from: "U.N. Owen",
-    text: "Here's a new message from client"
-  });
+  // socket.emit('createMessage', {
+  //   from: "U.N. Owen",
+  //   text: "Here's a new message from client"
+  // });
 
 });
 
