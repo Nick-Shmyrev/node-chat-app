@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 var generateMessage = (from, text) => {
   return {
     from,
@@ -6,4 +8,12 @@ var generateMessage = (from, text) => {
   };
 };
 
-module.exports = {generateMessage};
+var generateLocationMessage = (from, coords) => {
+  return {
+    from,
+    url: `https://www.google.com/maps?q=${coords.lat},${coords.lng}`,
+    createdAt: new Date().getTime()
+  };
+};
+
+module.exports = {generateMessage, generateLocationMessage};
