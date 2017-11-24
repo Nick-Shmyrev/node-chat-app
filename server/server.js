@@ -6,6 +6,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 
 const {generateMessage, generateLocationMessage} = require('./utils/message.js');
+const {isRealString} = require('./utils/validation.js');
 
 const publicPath = path.join(__dirname, '/../public');
 const PORT = process.env.PORT || 3000;
@@ -23,6 +24,16 @@ io.on('connection', (socket) => {
 
   // emits a message to everyone but the user
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
+
+  socket.on('join', (params, callback) => {
+    if (!isRealString(params.name) || !isRealString(params.room)) {
+      callback('Display Name and Room Name are reuqired.');
+    }
+
+
+
+    callback();
+  });
 
   // listen for new messages FROM clients, emit them back TO clients
   socket.on('createMessage', (message, callback) => {
