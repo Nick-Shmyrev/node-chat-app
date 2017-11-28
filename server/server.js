@@ -19,18 +19,23 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('new user connected');
 
-  // emits a message to a single user
-  socket.emit('newMessage', generateMessage('Admin', 'Welcome to chat app'));
-
-  // emits a message to everyone but the user
-  socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
-
   socket.on('join', (params, callback) => {
     if (!isRealString(params.name) || !isRealString(params.room)) {
       callback('Display Name and Room Name are reuqired.');
     }
 
+    socket.join(params.room);
+    //socket.leave('room name');
 
+    // io.emit -> io.to('room name').emit
+    //
+    // socket.broadcast.emit -> socket.broadcast.to('room name').emit
+
+    // emits a message to a single user
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to chat app'));
+
+    // emits a message to everyone but the user
+    socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined`));
 
     callback();
   });
