@@ -11,18 +11,18 @@ class Users {
     return user;
   }
 
+  getUser (id) {
+    return this.usersArray.filter((user) => user.id === id)[0];
+  }
+
   removeUser (id) {
     var user = this.getUser(id);
-
+    
     if (user) {
-      this.usersArray = this.usersArray.filter( (user) => user.id !== id );
+      this.usersArray = this.usersArray.filter((user) => user.id !== id);
     }
 
     return user;
-  }
-
-  getUser (id) {
-    return this.usersArray.filter( (user) => user.id === id )[0];
   }
 
   getUserList (room) {
