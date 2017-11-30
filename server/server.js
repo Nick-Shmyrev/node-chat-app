@@ -43,13 +43,21 @@ io.on('connection', (socket) => {
 
   // listen for new messages FROM clients, emit them back TO clients
   socket.on('createMessage', (message, callback) => {
-    console.log('Msg from client', message);
-    io.emit('newMessage', generateMessage(message.from, message.text));
+    var user = users.getUser(socket.id);
+
+    if (user && isRealString(message.text)) {
+      io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+    }
+
     callback();
   });
 
   socket.on('createLocationMessage', (coords) => {
-    io.emit('newLocationMessage', generateLocationMessage('Admin', {lat: coords.lat, lng: coords.lng}));
+    var user = users.getUser(socket.id);
+
+    if (user) {
+      io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, {lat: coords.lat, lng: coords.lng}));
+    }
   });
 
   socket.on('disconnect', () => {
